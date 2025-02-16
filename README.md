@@ -15,6 +15,7 @@
 - **LocalStorage**: Persistencia de datos local.
 
 ## Descripción del Proyecto
+Video resumen: https://youtu.be/fgORBnYDXY8
 
 Este proyecto corresponde a la entrega final del curso de React JS de CoderHouse. Es una plataforma de e-commerce para la venta de productos para celebración de matrimonios. La aplicación incluye:
 
