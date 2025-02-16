@@ -75,7 +75,12 @@ button:focus-visible {
 
 /* Estilos para ItemListContainer */
 .item-list-container {
-  padding-top: 76px;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.item-list {
+  padding-top: 5rem;
   min-height: 100vh;
   width: 100%;
 }
