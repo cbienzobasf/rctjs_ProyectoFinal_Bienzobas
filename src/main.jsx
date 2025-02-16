@@ -45,7 +45,7 @@ googleProvider.setCustomParameters({
     prompt: 'select_account',
     access_type: 'offline',
     display: 'popup',
-    redirect_uri: window.location.origin
+    redirect_uri: 'https://cbienzobasf.github.io/rctjs_ProyectoFinal_Bienzobas/'
 });
 
 // Autenticación.

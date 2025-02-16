@@ -1,10 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   plugins: [react()],
-  base: command === 'build' 
-    ? '/rctjs_preEntrega1_Bienzobas/'  // URL base para producción (GitHub Pages)
-    : '/',  // URL base para desarrollo local
-  envDir: './'
-}));
+  base: '/rctjs_ProyectoFinal_Bienzobas/',  // URL base fija para producción y desarrollo
+  envDir: './',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false
+  }
+});

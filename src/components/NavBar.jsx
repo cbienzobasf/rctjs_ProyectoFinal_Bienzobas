@@ -1,6 +1,6 @@
 // NAVBAR
 
-  /**
+/**
  * Objetivo:
  * - Barra de navegación principal.
  * - Logo y marca de la tienda.
@@ -24,20 +24,43 @@ import { Nav, Navbar, Container, Button, Badge } from 'react-bootstrap';
 import { FaHeart, FaClipboardList } from 'react-icons/fa';
 // lista de deseos.
 import { useWishlist } from '../context/WishlistContext';
+// Firebase
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '../main';
+// React
+import { useState, useEffect } from 'react';
 
 // Componente principal.
 const NavBar = () => {
+  // Estados
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   // Lista de deseos.
   const { wishlist } = useWishlist();
 
-  // Categorías disponibles en tienda.
-  const categories = [
-    { id: 'invitaciones', name: 'Invitaciones' },   // Invitaciones de boda.
-    { id: 'decoracion', name: 'Decoración' },       // Elementos decorativos.
-    { id: 'recuerdos', name: 'Recuerdos' },        // Recuerdos y regalos.
-    { id: 'accesorios', name: 'Accesorios' },      // Accesorios varios.
-    { id: 'iluminacion', name: 'Iluminación' }     // Elementos de iluminación.
-  ];
+  // Efecto para cargar categorías
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesRef = collection(db, 'categories');
+        const q = query(categoriesRef, orderBy('order', 'asc'));
+        const querySnapshot = await getDocs(q);
+        
+        const categoriesData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error al cargar categorías:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Renderizado.
   return (
@@ -53,15 +76,19 @@ const NavBar = () => {
           {/* Menú principal */}
           <Nav className="me-auto">
             {/* Generación dinámica enlaces categorías */}
-            {categories.map(cat => (
-              <Nav.Link 
-                key={cat.id} 
-                as={Link} 
-                to={`/category/${cat.id}`}
-              >
-                {cat.name}
-              </Nav.Link>
-            ))}
+            {loading ? (
+              <Nav.Item>Cargando categorías...</Nav.Item>
+            ) : (
+              categories.map(cat => (
+                <Nav.Link 
+                  key={cat.id} 
+                  as={Link} 
+                  to={`/category/${cat.key}`}
+                >
+                  {cat.name}
+                </Nav.Link>
+              ))
+            )}
           </Nav>
           {/* Menú secundario (wishlist, login, carrito) */}
           <Nav className="ms-auto d-flex align-items-center gap-3">
